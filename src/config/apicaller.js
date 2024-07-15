@@ -2,28 +2,8 @@ import axios from "axios";
 import { message } from "antd";
 import { navigate } from "@/utils/navigate";
 
-const apiUrl = "https://api.esoralabs.com/api/v1";
-// const apiUrl = "http://localhost:8000/api/v1";
-
-axios.interceptors.response.use(
-  (response) => {
-    console.log("repsonsee from api caller", response);
-    if (response?.status === 401) {
-      localStorage.removeItem("user");
-      navigate("/login");
-    } else {
-      return response;
-    }
-  },
-  ({ response }) => {
-    if (response?.status === 401) {
-      localStorage.removeItem("user");
-      navigate("/login");
-    } else {
-      return response;
-    }
-  }
-);
+// const apiUrl = "https://api.esoralabs.com/api/v1";
+const apiUrl = "http://localhost:8000/api/v1";
 
 axios.interceptors.request.use(
   function (config) {
@@ -32,9 +12,14 @@ axios.interceptors.request.use(
       config.headers = {
         ...config?.headers,
         authorization: JSON.parse(localStorage.getItem("user"))?.jwt,
+        portal: "developer",
       };
       return config;
     } else {
+      config.headers = {
+        ...config?.headers,
+        portal: "developer",
+      };
       return config;
     }
   },

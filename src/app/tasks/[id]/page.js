@@ -70,16 +70,12 @@ const ProfileDetails = () => {
     {
       key: "2",
       label: "Requirements",
-      children: (
-        <Requirements
-        
-        />
-      ),
+      children: <Requirements />,
     },
     {
       key: "3",
       label: "Files",
-      children: <Files  />,
+      children: <Files />,
     },
     {
       key: "4",
@@ -91,7 +87,7 @@ const ProfileDetails = () => {
           </span>
         </div>
       ),
-      children: <Messages  />,
+      children: <Messages />,
     },
   ];
   const changeTab = (e) => {

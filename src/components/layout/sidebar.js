@@ -15,27 +15,10 @@ const Sidebar = () => {
   const [state, setState] = useState({ email: "", name: "" });
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const email = JSON.parse(localStorage.getItem("user"))?.email;
-        const response = await ApiCaller.Get(
-          `/auth/users?type=admin&email=${email}`
-        );
-
-        if (response?.status === 200) {
-          setState({
-            email: response.data?.data[0]?.email,
-            name: response.data?.data[0]?.fullName,
-          });
-        } else {
-          message.error(response?.data?.message);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    fetchData();
+    setState({
+      email: JSON.parse(localStorage.getItem("user"))?.email,
+      name: JSON.parse(localStorage.getItem("user"))?.name,
+    });
   }, []);
 
   const handleNavigation = (path) => {

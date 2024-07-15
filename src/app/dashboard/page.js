@@ -29,6 +29,12 @@ const Dashboard = () => {
     totalRevenue: "0",
   });
 
+  const [name, setName] = useState("");
+
+  useEffect(() => {
+    setName(JSON.parse(localStorage.getItem("user"))?.name);
+  }, []);
+
   useEffect(() => {
     fetchActivityData();
   }, []);
@@ -43,8 +49,7 @@ const Dashboard = () => {
 
   const fetchOverview = async () => {
     try {
-      const response = await ApiCaller.Get("/admin/overview");
-      console.log(response);
+      const response = await ApiCaller.Get("/admin/overview-team");
       if (response?.status === 200) {
         setState({
           totalClient: response?.data?.data.totalClient,
@@ -61,8 +66,7 @@ const Dashboard = () => {
   const fetchRecentProjects = async () => {
     try {
       setRecentProjectsLoading(true);
-      const response = await ApiCaller.Get("/projects/recent-projects");
-      console.log(response);
+      const response = await ApiCaller.Get("/projects/recent-projects-team");
       if (response?.status === 200) {
         setRecentProjectsData(response?.data?.projects);
       }
@@ -77,7 +81,6 @@ const Dashboard = () => {
     try {
       setActivityLoading(true);
       const response = await ApiCaller.Get("/admin/activity");
-      console.log(response);
       if (response?.status === 200) {
         setActivityData(response?.data?.activity);
       }
@@ -98,10 +101,9 @@ const Dashboard = () => {
     <div>
       <div className={styles.justifyBetween}>
         <PageHeading
-          heading="Welcome back, Admin"
+          heading={`Welcome back, ${name}`}
           subHeading="Track, manage and forecast your clients."
         />
-       
       </div>
       <div className={styles.dataContainer}>
         <div className="col-span-2">
@@ -275,8 +277,7 @@ const Dashboard = () => {
         </div>
         <div className="col-span-1">
           <div className={styles.flexColumn}>
-            
-            <div style={{marginTop:"170px"}}>
+            <div style={{ marginTop: "170px" }}>
               <div className={styles.smallTitle}>Activity</div>
               {activityLoading ? (
                 <Loader />
